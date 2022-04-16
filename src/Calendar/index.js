@@ -1,11 +1,16 @@
 import React, { useMemo, useState } from "react";
+import PropTypes from "prop-types";
+
+import CalendarTable from "./Table";
+
 import {
   getCurrentMonth,
   getDaysOfMonth,
   getNextMonth,
   getPrevMonth
 } from "./utils";
-import CalendarTable from "./Table";
+
+import { CALENDAR_EVENTS, CITIES } from "../constants";
 
 import styles from "./styles.module.scss";
 
@@ -21,7 +26,7 @@ function Calendar(props) {
     setMonth(getNextMonth(month.startDate));
   }
 
-  const days = useMemo(() => {
+  const dates = useMemo(() => {
     return getDaysOfMonth(month.startDate, month.endDate);
   }, [month]);
 
@@ -37,10 +42,19 @@ function Calendar(props) {
         </span>
       </div>
       <div>
-        <CalendarTable month={month} data={days} />
+        <CalendarTable
+          calendarEvents={CALENDAR_EVENTS}
+          cities={CITIES}
+          month={month}
+          monthDateList={dates}
+        />
       </div>
     </div>
   );
 }
+
+Calendar.propTypes = {
+  currentMonth: PropTypes.shape()
+};
 
 export default Calendar;

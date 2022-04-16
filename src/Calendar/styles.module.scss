@@ -9,7 +9,7 @@
   position: sticky;
   top: 0px;
   z-index: 1;
-  background-color: #ffffff;
+  background-color: #F8F9FA;
 }
 
 .row {
@@ -28,27 +28,66 @@
   min-height: 50px;
 }
 
-.date {
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 19px;
-  text-transform: uppercase;
-  color: #212529;
+.header_col {
+  padding: 45px 24px;
 }
 
-.day {
-  margin-top: 10px;
+.city_name_header {
+  display: flex;
+  align-items: center;
+  & div {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: capitalize;
+    color: #868E96;
+    position: sticky;
+    left: 0px;
+    background-color: #F8F9FA;
+  }
+}
+
+.calendar_date_header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  & .date {
+    margin-top: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 19px;
+    text-transform: uppercase;
+    color: #212529;
+  }
+  
+  & .day {
+    margin-top: 10px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 10px;
+    line-height: 12px;
+    text-transform: uppercase;
+    color: #868E96;
+  }
+}
+
+.city_name_data {
   font-style: normal;
-  font-weight: 400;
-  font-size: 10px;
-  line-height: 12px;
-  text-transform: uppercase;
-  color: #868E96;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-transform: capitalize;
+  display: flex;
+  align-items: center;
+  position: sticky;
+  left: 0px;
+  background-color: #F8F9FA;
 }
 
 .event {
-  background-color: blue;
   border-radius: 12px;
   position: absolute;
   height: 30px;
@@ -56,15 +95,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fff;
-}
+  color: #212529;
 
-.start_overlapping {
-  border-top-left-radius: 0px;
-  border-bottom-left-radius: 0px;
-}
+  &.start_overlapping {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
 
-.end_overlapping {
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
+  &.end_overlapping {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  &.event_mild {
+    background-color: #FFE066;
+  }
+  
+  &.event_modarate {
+    background-color: #EFA17E;
+  }
+  
+  &.event_high {
+    background-color: #E899B2;
+  }
+  
+  &.event_positive {
+    background-color: #72B5A8;
+  }
 }

@@ -1,12 +1,16 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { CELL_MIN_HEIGHT, CELL_MIN_WIDTH } from "../constants";
+
 import styles from "./styles.module.scss";
 
 function TableCol(props) {
   const { className = "", dataCol, headerCol, style, height, ...rest } = props;
-  const localClassNames = [styles.col];
-  if (className) localClassNames.push(className);
-  if (dataCol) localClassNames.push(styles.data_col);
+  const classList = [styles.col];
+  if (className) classList.push(className);
+  if (dataCol) classList.push(styles.data_col);
+  if (headerCol) classList.push(styles.header_col);
 
   return (
     <div
@@ -17,9 +21,17 @@ function TableCol(props) {
         minHeight: `${CELL_MIN_HEIGHT}px`,
         minWidth: `${CELL_MIN_WIDTH}px`
       }}
-      className={localClassNames.join(" ")}
+      className={classList.join(" ")}
     ></div>
   );
 }
+
+TableCol.propTypes = {
+  className: PropTypes.string,
+  dataCol: PropTypes.bool,
+  headerCol: PropTypes.bool,
+  style: PropTypes.shape(),
+  height: PropTypes.number
+};
 
 export default TableCol;

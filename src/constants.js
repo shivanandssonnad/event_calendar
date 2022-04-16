@@ -1,10 +1,11 @@
 export const CELL_MIN_WIDTH = 160;
-export const CELL_MIN_HEIGHT = 50;
+export const CELL_MIN_HEIGHT = 60;
 export const PADDING = 10;
 export const HEIGHT = 30;
 export const TOP_PADDING = 10;
+export const TOTAL_CITIES = 10;
 
-export const CITIES = new Array(30).fill(1).map((each, index) => ({
+export const CITIES = new Array(TOTAL_CITIES).fill(1).map((each, index) => ({
   name: `City ${index + 1}`,
   id: index
 }));
@@ -17,7 +18,7 @@ export const CALENDAR_EVENTS = [
     startTime: "09:00",
     endTime: "22:00",
     categoryId: [1, 2, 3],
-    impactId: 1,
+    impactId: 0,
     description: "hello",
     event: {
       eventId: 2,
@@ -62,7 +63,7 @@ export const CALENDAR_EVENTS = [
     startTime: "09:00",
     endTime: "22:00",
     categoryId: [1, 2, 3],
-    impactId: 1,
+    impactId: 2,
     description: "hello",
     event: {
       eventId: 2,
@@ -77,7 +78,7 @@ export const CALENDAR_EVENTS = [
     startTime: "09:00",
     endTime: "22:00",
     categoryId: [1, 2, 3],
-    impactId: 1,
+    impactId: 3,
     description: "hello",
     event: {
       eventId: 2,

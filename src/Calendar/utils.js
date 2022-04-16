@@ -12,6 +12,10 @@ import {
   isBefore
 } from "date-fns";
 
+import { HEIGHT, PADDING, TOP_PADDING } from "../constants";
+
+import styles from "./styles.module.scss";
+
 export function getCurrentMonth(date = new Date(), dateFormat = "MMM yyyy") {
   const start = startOfMonth(date);
   const end = endOfMonth(date);
@@ -93,7 +97,7 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
   const events = calendarEvents
     .map((each) => each.cityId.map((e) => ({ ...each, cityId: e })))
     .flatMap((each) => each)
-    .filter((each) => (cityId ? each.cityId === cityId : true))
+    .filter((each) => each.cityId === cityId)
     .map((each) => {
       let startDateOverLapping = false;
       let endDateOverLapping = false;
@@ -116,6 +120,7 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
           startDate,
           endDate
         },
+        impactId: each.impactId,
         startDateOverLapping,
         endDateOverLapping,
         span,
@@ -135,6 +140,65 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
       if (s1 < s2) return 1;
       return 0;
     });
+  // const groupByImpactId = events.reduce((acc, curr) => {
+  //   const key = `${curr.left}_${curr.right}_${curr.impactId}`;
+  //   if (acc[key]) {
+  //     acc[key].list.push(curr.event);
+  //     return acc;
+  //   }
+  //   acc[key] = {
+  //     ...curr,
+  //     list: [curr.event]
+  //   };
+  //   return acc;
+  // }, {});
+  // const listByImpactId = Object.values(groupByImpactId);
+  // console.log(events, listByImpactId);
   const eventRows = getEventsByRow(events);
   return eventRows;
+}
+
+function getEventColorClass(impactId) {
+  console.log(impactId);
+  switch (impactId) {
+    case 0:
+      return styles.event_positive;
+    case 1:
+      return styles.event_mild;
+    case 2:
+      return styles.event_modarate;
+    default:
+      return styles.event_high;
+  }
+}
+
+export function getStyleForEvent(eventDetails, row) {
+  const {
+    span,
+    left,
+    startDateOverLapping,
+    endDateOverLapping,
+    impactId
+  } = eventDetails;
+  const classes = [styles.event, getEventColorClass(impactId)];
+  const top = row * (HEIGHT + TOP_PADDING) + TOP_PADDING;
+  let width = 160 * span - PADDING * 2;
+  let leftPosition = 160 * left + PADDING;
+  if (startDateOverLapping) {
+    leftPosition = leftPosition - PADDING;
+    classes.push(styles.start_overlapping);
+  }
+  if (endDateOverLapping) {
+    width = width + PADDING;
+    classes.push(styles.end_overlapping);
+  }
+  return {
+    style: {
+      width: `${width}px`,
+      left: `${leftPosition}px`,
+      top: `${top}px`,
+      height: `${HEIGHT}px`
+    },
+    classes: classes.join(" ")
+  };
 }

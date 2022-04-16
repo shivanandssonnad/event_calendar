@@ -1,43 +1,29 @@
-import React from "react";
-import { HEIGHT, PADDING, TOP_PADDING } from "../constants";
-import styles from "./styles.module.scss";
+import React, { useMemo } from "react";
+import PropTypes from "prop-types";
+
+import { getStyleForEvent } from "./utils";
 
 function Event(props) {
+  const { eventDetails, row, index } = props;
+  const { event } = eventDetails;
   const {
-    span,
-    left,
-    row,
-    event,
-    startDateOverLapping,
-    endDateOverLapping
-  } = props;
-  const { event: eventDetails } = event;
-  const { name } = eventDetails;
-  const classes = [styles.event];
-  const top = row * (HEIGHT + TOP_PADDING) + TOP_PADDING;
-  let width = 160 * span - PADDING * 2;
-  let leftPosition = 160 * left + PADDING;
-  if (startDateOverLapping) {
-    leftPosition = leftPosition - PADDING;
-    classes.push(styles.start_overlapping);
-  }
-  if (endDateOverLapping) {
-    width = width + PADDING;
-    classes.push(styles.end_overlapping);
-  }
+    event: { name }
+  } = event;
+  const { style, classes } = useMemo(
+    () => getStyleForEvent(eventDetails, row, index),
+    [eventDetails, row, index]
+  );
   return (
-    <div
-      style={{
-        width: `${width}px`,
-        left: `${leftPosition}px`,
-        top: `${top}px`,
-        height: `${HEIGHT}px`
-      }}
-      className={classes.join(" ")}
-    >
+    <div style={style} className={classes}>
       {name}
     </div>
   );
 }
+
+Event.propTypes = {
+  eventDetails: PropTypes.shape(),
+  row: PropTypes.number,
+  index: PropTypes.number
+};
 
 export default Event;
