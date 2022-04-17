@@ -4,6 +4,14 @@
   background-color: #f8f9fa;
 }
 
+.sticky {
+  position: fixed;
+  top: 70px;
+  width: 100%;
+  background-color: #f8f9fa;
+  z-index: 3;
+}
+
 * {
   box-sizing: border-box;
 }

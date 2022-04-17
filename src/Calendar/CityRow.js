@@ -15,11 +15,17 @@ function CityRow(props) {
   const { city, monthDateList, month, calendarEvents } = props;
   const { id: cityId } = city;
 
-  const [eventRows, rowHeight] = useMemo(() => {
-    const rows = getCalendarEventsCityId(calendarEvents, cityId, month);
-    const count = rows.length;
+  const [eventRows, showMoreEventRow, rowHeight] = useMemo(() => {
+    const {
+      eventRows: rows,
+      showMoreEventRow: showMoreRow
+    } = getCalendarEventsCityId(calendarEvents, cityId, month);
+    let count = rows.length;
+    if (showMoreRow.length) {
+      count = count + 1;
+    }
     const height = count * (HEIGHT + TOP_PADDING) + TOP_PADDING;
-    return [rows, height];
+    return [rows, showMoreRow, height];
   }, [calendarEvents, cityId, month]);
 
   return (
@@ -36,7 +42,11 @@ function CityRow(props) {
           ></TableCol>
         );
       })}
-      <EventRows eventRows={eventRows} cityId={city.id} />
+      <EventRows
+        eventRows={eventRows}
+        showMoreEventRow={showMoreEventRow}
+        cityId={city.id}
+      />
     </TableRow>
   );
 }

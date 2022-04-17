@@ -9,7 +9,7 @@ import styles from "./styles.module.scss";
 function CalendarTable(props) {
   const { monthDateList = [], month, cities, calendarEvents } = props;
   return (
-    <div className={styles.table_container}>
+    <div className={styles.calendar_table}>
       <HeaderRow monthDateList={monthDateList} />
       {cities.map((city) => (
         <CityRow

@@ -41,7 +41,7 @@ function Calendar(props) {
           <button onClick={handleNextMonth}>Next</button>
         </span>
       </div>
-      <div>
+      <div className={styles.table_container}>
         <CalendarTable
           calendarEvents={CALENDAR_EVENTS}
           cities={CITIES}

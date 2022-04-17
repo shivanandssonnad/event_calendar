@@ -12,7 +12,13 @@ import {
   isBefore
 } from "date-fns";
 
-import { HEIGHT, PADDING, TOP_PADDING } from "../constants";
+import {
+  CELL_MIN_WIDTH,
+  HEIGHT,
+  MAX_ROWS_ON_UI,
+  PADDING,
+  TOP_PADDING
+} from "../constants";
 
 import styles from "./styles.module.scss";
 
@@ -91,75 +97,103 @@ function getEventsByRow(events, result = []) {
   return getEventsByRow(pendingItems, result);
 }
 
-export function getCalendarEventsCityId(calendarEvents, cityId, month) {
+export function transformEvent(event, month) {
   const monthStartDate = month.startDate;
   const monthEndDate = month.endDate;
+  let startDateOverLapping = false;
+  let endDateOverLapping = false;
+  let startDate = parse(event.startDate, "dd/MM/yyyyy", new Date());
+  if (isBefore(startDate, monthStartDate)) {
+    startDate = monthStartDate;
+    startDateOverLapping = true;
+  }
+  let endDate = parse(event.endDate, "dd/MM/yyyyy", new Date());
+  if (isAfter(endDate, monthEndDate)) {
+    endDate = monthEndDate;
+    endDateOverLapping = true;
+  }
+  const span = differenceInDays(endOfDay(endDate), startOfDay(startDate)) + 1;
+  return {
+    cityId: event.cityId,
+    eventId: event.eventId,
+    impactId: event.impactId,
+    startDateOverLapping,
+    endDateOverLapping,
+    span,
+    left: startDate.getDate(),
+    right: endDate.getDate(),
+    event: {
+      ...event,
+      startDate,
+      endDate
+    }
+  };
+}
+
+export function sortByLeftAndSpan(a, b) {
+  const l1 = a.left;
+  const l2 = b.left;
+
+  const s1 = a.span;
+  const s2 = b.span;
+  if (l1 > l2) return 1;
+  if (l1 < l2) return -1;
+  if (s1 > s2) return -1;
+  if (s1 < s2) return 1;
+  return 0;
+}
+
+export function getCalendarEventsCityId(calendarEvents, cityId, month) {
   const events = calendarEvents
     .map((each) => each.cityId.map((e) => ({ ...each, cityId: e })))
     .flatMap((each) => each)
     .filter((each) => each.cityId === cityId)
-    .map((each) => {
-      let startDateOverLapping = false;
-      let endDateOverLapping = false;
-      let startDate = parse(each.startDate, "dd/MM/yyyyy", new Date());
-      if (isBefore(startDate, monthStartDate)) {
-        startDate = monthStartDate;
-        startDateOverLapping = true;
-      }
-      let endDate = parse(each.endDate, "dd/MM/yyyyy", new Date());
-      if (isAfter(endDate, monthEndDate)) {
-        endDate = monthEndDate;
-        endDateOverLapping = true;
-      }
-      const span =
-        differenceInDays(endOfDay(endDate), startOfDay(startDate)) + 1;
-      return {
-        cityId: each.cityId,
-        event: {
-          ...each,
-          startDate,
-          endDate
-        },
-        impactId: each.impactId,
-        startDateOverLapping,
-        endDateOverLapping,
-        span,
-        left: startDate.getDate(),
-        right: endDate.getDate()
-      };
-    })
-    .sort((a, b) => {
-      const l1 = a.left;
-      const l2 = b.left;
+    .map((each) => transformEvent(each, month))
+    .sort(sortByLeftAndSpan);
 
-      const s1 = a.span;
-      const s2 = b.span;
-      if (l1 > l2) return 1;
-      if (l1 < l2) return -1;
-      if (s1 > s2) return -1;
-      if (s1 < s2) return 1;
-      return 0;
-    });
-  // const groupByImpactId = events.reduce((acc, curr) => {
-  //   const key = `${curr.left}_${curr.right}_${curr.impactId}`;
-  //   if (acc[key]) {
-  //     acc[key].list.push(curr.event);
-  //     return acc;
-  //   }
-  //   acc[key] = {
-  //     ...curr,
-  //     list: [curr.event]
-  //   };
-  //   return acc;
-  // }, {});
-  // const listByImpactId = Object.values(groupByImpactId);
-  // console.log(events, listByImpactId);
   const eventRows = getEventsByRow(events);
-  return eventRows;
+  console.log("eventRows", eventRows);
+
+  const transformedEventRows = eventRows.reduce(
+    (acc, curr, index) => {
+      if (index < MAX_ROWS_ON_UI) {
+        acc[0].push(curr);
+        return acc;
+      }
+      // console.log(curr);
+      const rowHasEventsWithMultipleSpan = curr.some((each) => each.span > 1);
+      if (rowHasEventsWithMultipleSpan) {
+        acc[0].push(curr);
+        return acc;
+      }
+      acc[1].push(curr);
+      return acc;
+    },
+    [[], []]
+  );
+  const showMoreRowsGroupByDate = transformedEventRows[1]
+    .flatMap((each) => each)
+    .reduce((acc, curr) => {
+      const key = `${curr.left}_${curr.span}`;
+      if (acc[key]) {
+        acc[key].showMoreList.push(curr.event);
+        return acc;
+      }
+      acc[key] = {
+        ...curr,
+        showMoreList: [curr]
+      };
+      return acc;
+    }, {});
+  const showMoreRowEvents = Object.values(showMoreRowsGroupByDate);
+  console.log(showMoreRowEvents);
+  return {
+    eventRows: transformedEventRows[0],
+    showMoreEventRow: showMoreRowEvents
+  };
 }
 
 function getEventColorClass(impactId) {
-  console.log(impactId);
   switch (impactId) {
     case 0:
       return styles.event_positive;
@@ -182,8 +216,8 @@ export function getStyleForEvent(eventDetails, row) {
   } = eventDetails;
   const classes = [styles.event, getEventColorClass(impactId)];
   const top = row * (HEIGHT + TOP_PADDING) + TOP_PADDING;
-  let width = 160 * span - PADDING * 2;
-  let leftPosition = 160 * left + PADDING;
+  let width = CELL_MIN_WIDTH * span - PADDING * 2;
+  let leftPosition = CELL_MIN_WIDTH * left + PADDING;
   if (startDateOverLapping) {
     leftPosition = leftPosition - PADDING;
     classes.push(styles.start_overlapping);

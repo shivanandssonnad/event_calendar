@@ -3,12 +3,16 @@
   overflow: auto;
 }
 
+.calendar_table {
+  display: inline-block;
+}
+
 .table_title_container {
   padding: 24px 0px;
   text-align: center;
   position: sticky;
   top: 0px;
-  z-index: 1;
+  z-index: 3;
   background-color: #F8F9FA;
 }
 
@@ -35,6 +39,9 @@
 .city_name_header {
   display: flex;
   align-items: center;
+  position: sticky;
+  left: 0px;
+  background-color: #F8F9FA;
   & div {
     font-style: normal;
     font-weight: 400;
@@ -42,9 +49,6 @@
     line-height: 17px;
     text-transform: capitalize;
     color: #868E96;
-    position: sticky;
-    left: 0px;
-    background-color: #F8F9FA;
   }
 }
 
@@ -85,6 +89,7 @@
   position: sticky;
   left: 0px;
   background-color: #F8F9FA;
+  z-index: 2;
 }
 
 .event {
