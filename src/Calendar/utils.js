@@ -206,7 +206,7 @@ function getEventColorClass(impactId) {
   }
 }
 
-export function getStyleForEvent(eventDetails, row) {
+export function getStyleForEvent(eventDetails, row, index, isShowMore) {
   const {
     span,
     left,
@@ -214,7 +214,13 @@ export function getStyleForEvent(eventDetails, row) {
     endDateOverLapping,
     impactId
   } = eventDetails;
-  const classes = [styles.event, getEventColorClass(impactId)];
+  const classes = [];
+  if (!isShowMore) {
+    classes.push(styles.event);
+    classes.push(getEventColorClass(impactId));
+  } else {
+    classes.push(styles.show_more_link);
+  }
   const top = row * (HEIGHT + TOP_PADDING) + TOP_PADDING;
   let width = CELL_MIN_WIDTH * span - PADDING * 2;
   let leftPosition = CELL_MIN_WIDTH * left + PADDING;

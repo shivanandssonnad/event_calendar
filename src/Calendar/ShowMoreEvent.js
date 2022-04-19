@@ -5,7 +5,7 @@ function ShowMoreEvent(props) {
   const { eventDetails, row, index } = props;
   const { showMoreList } = eventDetails;
   const { style, classes } = useMemo(
-    () => getStyleForEvent(eventDetails, row, index),
+    () => getStyleForEvent(eventDetails, row, index, true),
     [eventDetails, row, index]
   );
   return (
