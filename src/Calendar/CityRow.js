@@ -5,9 +5,9 @@ import EventRows from "./EventRows";
 import TableCol from "./TableCol";
 import TableRow from "./TableRow";
 
-import { getCalendarEventsCityId } from "./utils";
+import { getCalendarEventsByCityId } from "./utils";
 
-import { HEIGHT, TOP_PADDING } from "../constants";
+import { CELL_MIN_HEIGHT, EVENT_HEIGHT, TOP_PADDING } from "../constants";
 
 import styles from "./styles.module.scss";
 
@@ -19,29 +19,27 @@ function CityRow(props) {
     const {
       eventRows: rows,
       showMoreEventRow: showMoreRow
-    } = getCalendarEventsCityId(calendarEvents, cityId, month);
-    console.log(cityId, rows, showMoreRow);
+    } = getCalendarEventsByCityId(calendarEvents, cityId, month);
     let count = rows.length;
     if (showMoreRow.length) {
       count = count + 1;
     }
-    const height = count * (HEIGHT + TOP_PADDING) + TOP_PADDING;
+    const height = count * (EVENT_HEIGHT + TOP_PADDING) + TOP_PADDING;
     return [rows, showMoreRow, height];
   }, [calendarEvents, cityId, month]);
 
   return (
-    <TableRow>
-      <TableCol className={styles.city_name_data} height={rowHeight} dataCol>
+    <TableRow
+      style={{
+        height: `${rowHeight}px`,
+        minHeight: `${CELL_MIN_HEIGHT}px`
+      }}
+    >
+      <TableCol className={styles.city_name_data} dataCol>
         {city.name}
       </TableCol>
       {monthDateList.map((each) => {
-        return (
-          <TableCol
-            key={`${city.id} ${each.dateStr}`}
-            dataCol
-            height={rowHeight}
-          ></TableCol>
-        );
+        return <TableCol key={`${city.id} ${each.dateStr}`} dataCol></TableCol>;
       })}
       <EventRows
         eventRows={eventRows}

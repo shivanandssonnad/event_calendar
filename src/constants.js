@@ -1,10 +1,12 @@
 export const CELL_MIN_WIDTH = 172; // table cell min width
 export const CELL_MIN_HEIGHT = 60; // table cell min height
 export const PADDING = 10; // left and right margin for cell event
-export const HEIGHT = 36; // event height
+export const EVENT_HEIGHT = 36; // event height
 export const TOP_PADDING = 10; // top margin for event
 export const TOTAL_CITIES = 10; // number of cities
 export const MAX_ROWS_ON_UI = 2; // max number of events to be shown for single date and city on UI
+export const API_DATE_FORMAT = "dd/MM/yyyyy";
+export const UI_DISPLAY_MONTH_FORMAT = "MMM yyyy";
 
 export const CITIES = new Array(TOTAL_CITIES).fill(1).map((each, index) => ({
   name: `City ${index + 1}`,
@@ -23,7 +25,7 @@ export const CALENDAR_EVENTS = [
     description: "hello",
     event: {
       eventId: 2,
-      name: "Diwali",
+      name: "Diwali overlap with prev month",
       typeId: 2
     }
   },
@@ -54,6 +56,21 @@ export const CALENDAR_EVENTS = [
     event: {
       eventId: 2,
       name: "Diwali",
+      typeId: 2
+    }
+  },
+  {
+    cityId: [1],
+    startDate: "02/04/2022",
+    endDate: "03/04/2022",
+    startTime: "09:00",
+    endTime: "22:00",
+    categoryId: [1, 2, 3],
+    impactId: 1,
+    description: "hello",
+    event: {
+      eventId: 2,
+      name: "Diwali 2",
       typeId: 2
     }
   },
@@ -143,7 +160,7 @@ export const CALENDAR_EVENTS = [
     description: "hello",
     event: {
       eventId: 2,
-      name: "Diwali overlapping",
+      name: "Diwali overlap with next month",
       typeId: 2
     }
   },
@@ -238,14 +255,3 @@ export const CALENDAR_EVENTS = [
     }
   }
 ];
-
-// let list = events;
-//   let showMoreList = [];
-//   const showMoreStartIndex = events.indexOf(
-//     (each, index) => index > MAX_ROWS_ON_UI - 1 && each.span === 1
-//   );
-//   if (showMoreStartIndex > -1) {
-//     showMoreList = events.slice(showMoreStartIndex);
-//     list = events.slice(0, showMoreStartIndex);
-//   }
-//   console.log(rowIndex, list, showMoreList);

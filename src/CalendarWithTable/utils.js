@@ -159,7 +159,6 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
         acc[0].push(curr);
         return acc;
       }
-      // console.log(curr);
       const rowHasEventsWithMultipleSpan = curr.some((each) => each.span > 1);
       if (rowHasEventsWithMultipleSpan) {
         acc[0].push(curr);

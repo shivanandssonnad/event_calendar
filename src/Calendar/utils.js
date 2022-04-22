@@ -13,26 +13,28 @@ import {
 } from "date-fns";
 
 import {
+  API_DATE_FORMAT,
   CELL_MIN_WIDTH,
-  HEIGHT,
+  EVENT_HEIGHT,
   MAX_ROWS_ON_UI,
   PADDING,
-  TOP_PADDING
+  TOP_PADDING,
+  UI_DISPLAY_MONTH_FORMAT
 } from "../constants";
 
 import styles from "./styles.module.scss";
 
-export function getCurrentMonth(date = new Date(), dateFormat = "MMM yyyy") {
+export function getCurrentMonth(date = new Date()) {
   const start = startOfMonth(date);
   const end = endOfMonth(date);
   return {
     startDate: start,
     endDate: end,
-    monthStr: format(start, "MMM yyyy")
+    monthStr: format(start, UI_DISPLAY_MONTH_FORMAT)
   };
 }
 
-export function getNextMonth(currentMonth, dateFormat = "MMM yyyy") {
+export function getNextMonth(currentMonth) {
   const date = currentMonth;
   const lastDateOfCurrentMonth = endOfMonth(date);
   const nextMonthDate = addDays(lastDateOfCurrentMonth, 1);
@@ -41,12 +43,12 @@ export function getNextMonth(currentMonth, dateFormat = "MMM yyyy") {
   const response = {
     startDate: startOfNextMonth,
     endDate: endOfNextMonth,
-    monthStr: format(startOfNextMonth, "MMM yyyy")
+    monthStr: format(startOfNextMonth, UI_DISPLAY_MONTH_FORMAT)
   };
   return response;
 }
 
-export function getPrevMonth(currentMonth, dateFormat = "MMM yyyy") {
+export function getPrevMonth(currentMonth) {
   const date = currentMonth;
   const startOfCurrentMonth = startOfMonth(date);
   const prevMonthDate = subDays(startOfCurrentMonth, 1);
@@ -55,7 +57,7 @@ export function getPrevMonth(currentMonth, dateFormat = "MMM yyyy") {
   const response = {
     startDate: startOfPrevMonth,
     endDate: endOfPrevMonth,
-    monthStr: format(startOfPrevMonth, "MMM yyyy")
+    monthStr: format(startOfPrevMonth, UI_DISPLAY_MONTH_FORMAT)
   };
   return response;
 }
@@ -97,17 +99,33 @@ function getEventsByRow(events, result = []) {
   return getEventsByRow(pendingItems, result);
 }
 
+function handleGroupSimilarEvents(events) {
+  const groupedList = events.reduce((acc, curr) => {
+    const key = `${curr.left}_${curr.span}_${curr.impactId}`;
+    if (acc[key]) {
+      acc[key].events.push(curr.event.event);
+      return acc;
+    }
+    acc[key] = {
+      ...curr,
+      events: [curr.event.event]
+    };
+    return acc;
+  }, {});
+  return Object.values(groupedList);
+}
+
 export function transformEvent(event, month) {
   const monthStartDate = month.startDate;
   const monthEndDate = month.endDate;
   let startDateOverLapping = false;
   let endDateOverLapping = false;
-  let startDate = parse(event.startDate, "dd/MM/yyyyy", new Date());
+  let startDate = parse(event.startDate, API_DATE_FORMAT, new Date());
   if (isBefore(startDate, monthStartDate)) {
     startDate = monthStartDate;
     startDateOverLapping = true;
   }
-  let endDate = parse(event.endDate, "dd/MM/yyyyy", new Date());
+  let endDate = parse(event.endDate, API_DATE_FORMAT, new Date());
   if (isAfter(endDate, monthEndDate)) {
     endDate = monthEndDate;
     endDateOverLapping = true;
@@ -143,17 +161,8 @@ export function sortByLeftAndSpan(a, b) {
   return 0;
 }
 
-export function getCalendarEventsCityId(calendarEvents, cityId, month) {
-  const events = calendarEvents
-    .map((each) => each.cityId.map((e) => ({ ...each, cityId: e })))
-    .flatMap((each) => each)
-    .filter((each) => each.cityId === cityId)
-    .map((each) => transformEvent(each, month))
-    .sort(sortByLeftAndSpan);
-
-  const eventRows = getEventsByRow(events);
-
-  const transformedEventRows = eventRows.reduce(
+function separateEventRowsAndShowMoreEvents(eventRows) {
+  const [filteredEventRows, showMoreEventRows] = eventRows.reduce(
     (acc, curr, index) => {
       if (index < MAX_ROWS_ON_UI) {
         acc[0].push(curr);
@@ -169,7 +178,7 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
     },
     [[], []]
   );
-  const showMoreRowsGroupByDate = transformedEventRows[1]
+  const showMoreRowsGroupByDate = showMoreEventRows
     .flatMap((each) => each)
     .reduce((acc, curr) => {
       const key = `${curr.left}_${curr.span}`;
@@ -184,9 +193,28 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
       return acc;
     }, {});
   const showMoreRowEvents = Object.values(showMoreRowsGroupByDate);
+  return [filteredEventRows, showMoreRowEvents];
+}
+
+export function getCalendarEventsByCityId(calendarEvents, cityId, month) {
+  const events = calendarEvents
+    .map((each) => each.cityId.map((e) => ({ ...each, cityId: e })))
+    .flatMap((each) => each)
+    .filter((each) => each.cityId === cityId) // filter events for given city id
+    .map((each) => transformEvent(each, month)) // transform event to required format
+    .sort(sortByLeftAndSpan); // sort events by left position and span higher to lower
+
+  const groupedEventList = handleGroupSimilarEvents(events); // group similar events to one event
+  const eventRows = getEventsByRow(groupedEventList); // convert events list to event rows list to display on UI
+
+  const [
+    filteredEventRows,
+    showMoreEventRow
+  ] = separateEventRowsAndShowMoreEvents(eventRows);
+
   return {
-    eventRows: transformedEventRows[0],
-    showMoreEventRow: showMoreRowEvents
+    eventRows: filteredEventRows,
+    showMoreEventRow
   };
 }
 
@@ -218,7 +246,7 @@ export function getStyleForEvent(eventDetails, row, index, isShowMore) {
   } else {
     classes.push(styles.show_more_link);
   }
-  const top = row * (HEIGHT + TOP_PADDING) + TOP_PADDING;
+  const top = row * (EVENT_HEIGHT + TOP_PADDING) + TOP_PADDING;
   let width = CELL_MIN_WIDTH * span - PADDING * 2;
   let leftPosition = CELL_MIN_WIDTH * left + PADDING;
   if (startDateOverLapping) {
@@ -235,7 +263,7 @@ export function getStyleForEvent(eventDetails, row, index, isShowMore) {
       width: `${width}px`,
       left: `${leftPosition}px`,
       top: `${top}px`,
-      height: `${HEIGHT}px`
+      height: `${EVENT_HEIGHT}px`
     },
     classes: classes.join(" ")
   };

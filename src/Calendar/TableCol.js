@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { CELL_MIN_HEIGHT, CELL_MIN_WIDTH } from "../constants";
+import { CELL_MIN_WIDTH } from "../constants";
 
 import styles from "./styles.module.scss";
 
@@ -17,8 +17,6 @@ function TableCol(props) {
       {...rest}
       style={{
         ...style,
-        height: `${height}px`,
-        minHeight: `${CELL_MIN_HEIGHT}px`,
         minWidth: `${CELL_MIN_WIDTH}px`
       }}
       className={classList.join(" ")}

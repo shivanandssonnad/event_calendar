@@ -5,10 +5,13 @@ import { getStyleForEvent } from "./utils";
 
 function Event(props) {
   const { eventDetails, row, index } = props;
-  const { event } = eventDetails;
-  const {
-    event: { name }
-  } = event;
+  const { events } = eventDetails;
+  let name = "";
+  if (events.length === 1) {
+    name = events[0].name;
+  } else {
+    name = `${events[0].name} and ${events.length - 1} more`;
+  }
   const { style, classes } = useMemo(
     () => getStyleForEvent(eventDetails, row, index),
     [eventDetails, row, index]
