@@ -53,7 +53,7 @@ CalendarTable.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.shape()),
   monthDateList: PropTypes.arrayOf(PropTypes.shape()),
   month: PropTypes.shape(),
-  calendarEvents: PropTypes.shape()
+  calendarEvents: PropTypes.arrayOf(PropTypes.shape())
 };
 
 export default CalendarTable;

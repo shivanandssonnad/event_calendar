@@ -1,9 +1,13 @@
 .App {
   font-family: sans-serif;
-  padding: 10px 30px;
+  padding: 0px 30px;
   background-color: #f8f9fa;
 }
 
 * {
   box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
 }

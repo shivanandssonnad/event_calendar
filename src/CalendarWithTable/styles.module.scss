@@ -1,0 +1,139 @@
+table, td, th {
+  border: 1px solid #DEE2E6;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+.table_container {
+  width: 100%;
+  overflow: auto;
+}
+
+.table_title_container {
+  padding: 24px 0px;
+  text-align: center;
+  position: sticky;
+  top: 0px;
+  z-index: 3;
+  background-color: #F8F9FA;
+}
+
+.header_col {
+  padding: 30px 40px;
+}
+
+.date {
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 19px;
+  text-transform: uppercase;
+  color: #212529;
+}
+
+.day {
+  margin-top: 10px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
+  text-transform: uppercase;
+  color: #868E96;
+}
+
+.city_name_header {
+  padding: 45px 24px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  text-transform: capitalize;
+  color: #868E96;
+  text-align: left;
+}
+
+.city_name_column {
+  padding: 45px 24px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  text-transform: capitalize;
+  color: #212529;
+  text-align: left;
+}
+
+.city_row_container {
+  position: relative;
+}
+
+.show_more_link {
+  position: absolute;
+  height: 36px;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #1C7ED6;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.event {
+  border-radius: 12px;
+  position: absolute;
+  height: 36px;
+  top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #212529;
+  font-weight: 600;
+  font-size: 10px;
+  line-height: 12px;
+  text-transform: capitalize;
+
+  &.start_overlapping {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+  }
+
+  &.end_overlapping {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  &.event_mild {
+    background-color: #FFE066;
+  }
+  
+  &.event_modarate {
+    background-color: #EFA17E;
+  }
+  
+  &.event_high {
+    background-color: #E899B2;
+  }
+  
+  &.event_positive {
+    background-color: #72B5A8;
+  }
+}
+
+.events_container {
+  position: absolute;
+  left: 0px;
+  border: none;
+}
+
+.sticky_left {
+  position: sticky;
+  left: 0px;
+  background-color: #F8F9FA;
+  z-index: 4;
+}

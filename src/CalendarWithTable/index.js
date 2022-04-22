@@ -14,7 +14,7 @@ import { CALENDAR_EVENTS, CITIES } from "../constants";
 
 import styles from "./styles.module.scss";
 
-function Calendar(props) {
+function CalendarWithTable(props) {
   const { currentMonth } = props;
   const [month, setMonth] = useState(getCurrentMonth(currentMonth));
 
@@ -31,8 +31,8 @@ function Calendar(props) {
   }, [month]);
 
   return (
-    <div className={styles.container}>
-      <div className={styles.table_action_container}>
+    <div>
+      <div className={styles.table_title_container}>
         <span>
           <button onClick={handlePrevMonth}>Prev</button>
         </span>
@@ -41,18 +41,20 @@ function Calendar(props) {
           <button onClick={handleNextMonth}>Next</button>
         </span>
       </div>
-      <CalendarTable
-        calendarEvents={CALENDAR_EVENTS}
-        cities={CITIES}
-        month={month}
-        monthDateList={dates}
-      />
+      <div className={styles.table_container}>
+        <CalendarTable
+          calendarEvents={CALENDAR_EVENTS}
+          cities={CITIES}
+          month={month}
+          monthDateList={dates}
+        />
+      </div>
     </div>
   );
 }
 
-Calendar.propTypes = {
+CalendarWithTable.propTypes = {
   currentMonth: PropTypes.shape()
 };
 
-export default Calendar;
+export default CalendarWithTable;

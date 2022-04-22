@@ -10,7 +10,7 @@ const HeaderRow = forwardRef((props, ref) => {
   const { monthDateList } = props;
 
   return (
-    <TableRow ref={ref}>
+    <TableRow className={styles.header_row} ref={ref}>
       <TableCol headerCol className={styles.city_name_header}>
         <div>City Name</div>
       </TableCol>

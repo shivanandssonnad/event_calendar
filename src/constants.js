@@ -1,4 +1,4 @@
-export const CELL_MIN_WIDTH = 194.7; // table cell min width
+export const CELL_MIN_WIDTH = 172; // table cell min width
 export const CELL_MIN_HEIGHT = 60; // table cell min height
 export const PADDING = 10; // left and right margin for cell event
 export const HEIGHT = 36; // event height

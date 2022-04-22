@@ -1,17 +1,24 @@
-.table_container {
+.container {
   width: 100%;
   overflow: auto;
+  height: 100vh;
+}
+
+.page_content {
+  position: sticky;
+  left: 0px;
 }
 
 .calendar_table {
   display: inline-block;
 }
 
-.table_title_container {
+.table_action_container {
   padding: 24px 0px;
   text-align: center;
   position: sticky;
   top: 0px;
+  left: 0px;
   z-index: 3;
   background-color: #F8F9FA;
 }
@@ -34,6 +41,13 @@
 
 .header_col {
   padding: 45px 24px;
+}
+
+.header_row {
+  position: sticky;
+  top: 69px;
+  background-color: #F8F9FA;
+  z-index: 4;
 }
 
 .city_name_header {

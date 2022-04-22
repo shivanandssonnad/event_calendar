@@ -159,6 +159,7 @@ export function getCalendarEventsCityId(calendarEvents, cityId, month) {
         acc[0].push(curr);
         return acc;
       }
+      // console.log(curr);
       const rowHasEventsWithMultipleSpan = curr.some((each) => each.span > 1);
       if (rowHasEventsWithMultipleSpan) {
         acc[0].push(curr);
@@ -223,7 +224,6 @@ export function getStyleForEvent(eventDetails, row, index, isShowMore) {
   let leftPosition = CELL_MIN_WIDTH * left + PADDING;
   if (startDateOverLapping) {
     leftPosition = leftPosition - PADDING;
-    width = width + PADDING;
     classes.push(styles.start_overlapping);
   }
   if (endDateOverLapping) {

@@ -20,6 +20,7 @@ function CityRow(props) {
       eventRows: rows,
       showMoreEventRow: showMoreRow
     } = getCalendarEventsCityId(calendarEvents, cityId, month);
+    console.log(cityId, rows, showMoreRow);
     let count = rows.length;
     if (showMoreRow.length) {
       count = count + 1;
