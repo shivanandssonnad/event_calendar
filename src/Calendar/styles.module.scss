@@ -123,18 +123,21 @@
 }
 
 .event {
-  border-radius: 12px;
-  position: absolute;
-  height: 36px;
-  top: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #212529;
+  text-transform: capitalize;
   font-weight: 600;
   font-size: 10px;
   line-height: 12px;
-  text-transform: capitalize;
+
+  border-radius: 12px;
+
+  position: absolute;
+  display: grid;
+  align-items: center;
+  grid-template-columns: 15px auto;
+  column-gap: 10px;
+  
+  padding: 8px 11px;
+  color: #212529;
 
   &.start_overlapping {
     border-top-left-radius: 0px;
@@ -163,6 +166,11 @@
   }
 }
 
+.event_name_container {
+  display: grid;
+  grid-template-columns: auto;
+}
+
 .sticky {
   position: fixed;
   top: 70px;
@@ -173,4 +181,11 @@
 
 .sticky_content {
   padding-top: 145px;
+}
+
+.event_type {
+  text-transform: capitalize;
+  font-weight: 400;
+  font-size: 10px;
+  line-height: 12px;
 }

@@ -33,6 +33,12 @@ function Calendar(props) {
   return (
     <div className={styles.container}>
       <div className={styles.table_action_container}>
+        <span>asjdkhajklsdla asjdkhajklsdlasd adsa</span>
+      </div>
+      <div className={styles.table_action_container}>
+        <span>asjdkhajklsdla asjdkhajklsdlasd adsa</span>
+      </div>
+      <div className={styles.table_action_container}>
         <span>
           <button onClick={handlePrevMonth}>Prev</button>
         </span>

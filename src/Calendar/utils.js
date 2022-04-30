@@ -135,6 +135,7 @@ export function transformEvent(event, month) {
     cityId: event.cityId,
     eventId: event.eventId,
     impactId: event.impactId,
+    typeId: event.event.typeId,
     startDateOverLapping,
     endDateOverLapping,
     span,
@@ -205,7 +206,9 @@ export function getCalendarEventsByCityId(calendarEvents, cityId, month) {
     .sort(sortByLeftAndSpan); // sort events by left position and span higher to lower
 
   const groupedEventList = handleGroupSimilarEvents(events); // group similar events to one event
+
   const eventRows = getEventsByRow(groupedEventList); // convert events list to event rows list to display on UI
+  console.log(eventRows);
 
   const [
     filteredEventRows,
@@ -241,7 +244,6 @@ export function getStyleForEvent(eventDetails, row, index, isShowMore) {
   } = eventDetails;
   const classes = [];
   if (!isShowMore) {
-    classes.push(styles.event);
     classes.push(getEventColorClass(impactId));
   } else {
     classes.push(styles.show_more_link);
