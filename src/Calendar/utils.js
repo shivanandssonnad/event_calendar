@@ -63,11 +63,13 @@ export function getPrevMonth(currentMonth) {
 }
 
 export function getDaysOfMonth(startDate, endDate) {
+  const currentDate = startOfDay(new Date()).valueOf();
   const start = startDate.getDate();
   const end = endDate.getDate();
   const list = new Array(end).fill(0);
   return list.map((each, index) => {
     const date = addDays(startDate, index);
+    const dateValue = startOfDay(date).valueOf();
     const isStartDate = index === start - 1;
     const isEndDate = index === end - 1;
     return {
@@ -75,7 +77,8 @@ export function getDaysOfMonth(startDate, endDate) {
       dateStr: format(date, "dd"),
       day: format(date, "EEE"),
       isStartDate,
-      isEndDate
+      isEndDate,
+      activeDate: currentDate === dateValue
     };
   });
 }

@@ -1,0 +1,24 @@
+Event Spanning scenarios
+
+1. event start date and end date is same date
+2. event start date and end date is not in same date but in same month
+3. event start date is in current month but end date is in not in current month
+4. event start date is in not in current month but end date is in current month
+
+Event row scenarios
+
+1. multiple events starting on same date with spanning 1 day
+2. multiple events starting on same date with spanning more than 1 day
+3. all combination start and end date of events
+4. events with early start date should appear on top
+5. events with larger spanning should appear on top
+6. if more than 2 rows show N more events row instead of increasing row height
+
+Event color
+
+1. event color is based on event impact id
+
+Icon and description on event
+
+1. event icon and description is based on event type id
+

@@ -8,6 +8,36 @@ export const MAX_ROWS_ON_UI = 2; // max number of events to be shown for single 
 export const API_DATE_FORMAT = "dd/MM/yyyyy";
 export const UI_DISPLAY_MONTH_FORMAT = "MMM yyyy";
 
+export const EVENT_IMPACT_ENUM_MAPPING = {
+  0: "POSITIVE",
+  1: "LOW",
+  2: "MEDIUM",
+  3: "HIGH"
+};
+
+export const EVENT_IMPACT = {
+  LOW: {
+    value: "LOW",
+    label: "Mild",
+    color: "#FFE066"
+  },
+  MEDIUM: {
+    value: "MEDIUM",
+    label: "Modarate",
+    color: "#EFA17E"
+  },
+  HIGH: {
+    value: "HIGH",
+    label: "High",
+    color: "#E899B2"
+  },
+  POSITIVE: {
+    value: "POSITIVE",
+    label: "Positive",
+    color: "#72B5A8"
+  }
+};
+
 export const EVENT_TYPE = {
   0: {
     name: "Festival",

@@ -10,9 +10,12 @@ import {
   getPrevMonth
 } from "./utils";
 
-import { CALENDAR_EVENTS, CITIES } from "../constants";
+import { CALENDAR_EVENTS, CITIES, EVENT_IMPACT } from "../constants";
 
 import styles from "./styles.module.scss";
+import classNames from "classnames";
+import Icon from "../Icons";
+import EventImpactName from "./EventImpactName";
 
 function Calendar(props) {
   const { currentMonth } = props;
@@ -32,20 +35,44 @@ function Calendar(props) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.table_action_container}>
-        <span>asjdkhajklsdla asjdkhajklsdlasd adsa</span>
+      <div
+        className={classNames(
+          styles.table_text_container,
+          styles.table_title_container
+        )}
+      >
+        <span>Event Impact on Sales</span>
       </div>
-      <div className={styles.table_action_container}>
-        <span>asjdkhajklsdla asjdkhajklsdlasd adsa</span>
-      </div>
-      <div className={styles.table_action_container}>
-        <span>
-          <button onClick={handlePrevMonth}>Prev</button>
-        </span>
-        <span>&nbsp;{month.monthStr}&nbsp;</span>
-        <span>
-          <button onClick={handleNextMonth}>Next</button>
-        </span>
+      <div
+        className={classNames(
+          styles.table_text_containerm,
+          styles.table_action_container
+        )}
+      >
+        <div>
+          <button>+ Add</button>
+        </div>
+        <div className={styles.table_month_container}>
+          <span>
+            <button onClick={handlePrevMonth}>
+              <Icon name="ArrowLeftIcon" width={10} height={10} />
+            </button>
+          </span>
+          <span>&nbsp;{month.monthStr}&nbsp;</span>
+          <span>
+            <button onClick={handleNextMonth}>
+              <Icon name="ArrowRightIcon" width={10} height={10} />
+            </button>
+          </span>
+        </div>
+        <div className={styles.event_impact_types_container}>
+          {Object.values(EVENT_IMPACT).map((each) => (
+            <EventImpactName impactConfig={each} />
+          ))}
+        </div>
+        <div>
+          <button>Filters</button>
+        </div>
       </div>
       <CalendarTable
         calendarEvents={CALENDAR_EVENTS}
