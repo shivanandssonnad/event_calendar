@@ -19,6 +19,7 @@ function CalendarTable(props) {
           monthDateList={monthDateList}
           month={month}
           city={city}
+          onClickEvent={props.onClickEvent}
         />
       ))}
     </div>
@@ -29,7 +30,8 @@ CalendarTable.propTypes = {
   cities: PropTypes.arrayOf(PropTypes.shape()),
   monthDateList: PropTypes.arrayOf(PropTypes.shape()),
   month: PropTypes.shape(),
-  calendarEvents: PropTypes.arrayOf(PropTypes.shape())
+  calendarEvents: PropTypes.arrayOf(PropTypes.shape()),
+  onClickEvent: PropTypes.func,
 };
 
 export default CalendarTable;

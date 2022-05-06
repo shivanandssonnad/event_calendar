@@ -18,6 +18,7 @@ function EventRow(props) {
               row={rowIndex}
               index={index}
               key={index}
+              onClick={props.onClick}
             />
           );
         }
@@ -27,6 +28,7 @@ function EventRow(props) {
             row={rowIndex}
             index={index}
             key={index}
+            onClick={props.onClick}
           />
         );
       })}
@@ -37,6 +39,7 @@ function EventRow(props) {
 EventRow.propTypes = {
   rowIndex: PropTypes.number,
   events: PropTypes.arrayOf(PropTypes.shape()),
-  showMoreRow: PropTypes.bool
+  showMoreRow: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 export default EventRow;

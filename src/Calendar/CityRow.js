@@ -28,6 +28,10 @@ function CityRow(props) {
     return [rows, showMoreRow, height];
   }, [calendarEvents, cityId, month]);
 
+  function handleClickEvent(eventId) {
+    props.onClickEvent(eventId, cityId)
+  }
+
   return (
     <TableRow
       style={{
@@ -45,6 +49,7 @@ function CityRow(props) {
         eventRows={eventRows}
         showMoreEventRow={showMoreEventRow}
         cityId={city.id}
+        onClick={handleClickEvent}
       />
     </TableRow>
   );
@@ -54,7 +59,8 @@ CityRow.propTypes = {
   city: PropTypes.shape(),
   monthDateList: PropTypes.arrayOf(PropTypes.shape()),
   month: PropTypes.shape(),
-  calendarEvents: PropTypes.arrayOf(PropTypes.shape())
+  calendarEvents: PropTypes.arrayOf(PropTypes.shape()),
+  onClickEvent: PropTypes.func,
 };
 
 export default CityRow;

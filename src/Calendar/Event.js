@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 
@@ -8,6 +8,7 @@ import { getStyleForEvent } from "./utils";
 import { EVENT_TYPE } from "../constants";
 
 import styles from "./styles.module.scss";
+import EventListPopup from "./EventListPopup";
 
 function EventTypeIcon(props) {
   const { eventTypeId } = props;
@@ -17,11 +18,16 @@ function EventTypeIcon(props) {
 
 function SingleEvent(props) {
   const { style, className, events } = props;
-  const [event] = events;
-  const { name, typeId } = event;
+  const [event] = events || [];
+  const { name, typeId, eventId } = event || {};
   const typeConfig = EVENT_TYPE[typeId] || {};
+
+  function handleClick() {
+    props.onClick(eventId)
+  }
+
   return (
-    <div style={style} className={classNames(className, styles.event)}>
+    <div style={style} className={classNames(className, styles.event)} onClick={handleClick}>
       <div className={styles.event_icon}>
         <EventTypeIcon eventTypeId={typeId} />
       </div>
@@ -36,26 +42,44 @@ function SingleEvent(props) {
 function MultipleEvents(props) {
   const { style, className, events } = props;
   const length = events.length;
+  const anchorEl = useRef(null);
+  const [open, setOpen] = useState(false);
+
+  function handleToggleOpen() {
+    setOpen(!open);
+  }
+
   return (
     <div
+      ref={anchorEl}
       style={{
         ...style,
         gridTemplateColumns: `repeat(${length}, 15px)`
       }}
       className={classNames(className, styles.event)}
+      onClick={handleToggleOpen}
     >
       {events.map((each) => (
-        <div className={styles.event_icon}>
-          <EventTypeIcon eventTypeId={each.typeId} />
+        <div key={each.eventId} className={styles.event_icon}>
+          <EventTypeIcon
+            key={each.eventId}
+            eventTypeId={each.typeId}
+          />
         </div>
       ))}
+      <EventListPopup
+        open={open}
+        anchorEl={anchorEl}
+        events={events}
+        onClick={props.onClick}
+      />
     </div>
   );
 }
 
 function Event(props) {
   const { eventDetails, row, index } = props;
-  const { events } = eventDetails;
+  const { similarEvents } = eventDetails;
 
   const { style, classes } = useMemo(
     () => getStyleForEvent(eventDetails, row, index),
@@ -63,17 +87,18 @@ function Event(props) {
   );
 
   const Component = useMemo(() => {
-    if (events.length > 1) return MultipleEvents;
+    if (similarEvents.length > 1) return MultipleEvents;
     return SingleEvent;
-  }, [events]);
+  }, [similarEvents]);
 
   return (
     <Component
       className={classes}
       style={style}
-      events={events}
+      events={similarEvents}
       row={row}
       index={index}
+      onClick={props.onClick}
     />
   );
 }
@@ -81,7 +106,10 @@ function Event(props) {
 Event.propTypes = {
   eventDetails: PropTypes.shape(),
   row: PropTypes.number,
-  index: PropTypes.number
+  index: PropTypes.number,
+  onClick: PropTypes.func,
 };
+
+Event.SingleEvent = SingleEvent;
 
 export default Event;

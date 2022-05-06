@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import PropTypes from "prop-types";
+import { useSelector, useDispatch } from 'react-redux';
 
 import CalendarTable from "./Table";
 
@@ -16,10 +17,20 @@ import styles from "./styles.module.scss";
 import classNames from "classnames";
 import Icon from "../Icons";
 import EventImpactName from "./EventImpactName";
+import { getEventListThunkAction } from "../redux/thunk";
+import { selectEventList, selectEventListLoading } from "../redux/selectors";
 
 function Calendar(props) {
   const { currentMonth } = props;
-  const [month, setMonth] = useState(getCurrentMonth(currentMonth));
+  const initialMonth = useMemo(() => getCurrentMonth(currentMonth), [currentMonth]);
+  const initialDates = useMemo(() => getDaysOfMonth(initialMonth.startDate, initialMonth.endDate), [initialMonth]);
+  const [month, setMonth] = useState(initialMonth);
+  const [dates, setDates] = useState(initialDates);
+
+  const dispatch = useDispatch();
+
+  const loading = useSelector(selectEventListLoading);
+  const events = useSelector(selectEventList);
 
   function handlePrevMonth() {
     setMonth(getPrevMonth(month.startDate));
@@ -29,8 +40,13 @@ function Calendar(props) {
     setMonth(getNextMonth(month.startDate));
   }
 
-  const dates = useMemo(() => {
-    return getDaysOfMonth(month.startDate, month.endDate);
+  function handleClickEvent(eventId, cityId) {
+    console.log(eventId, cityId);
+  }
+
+  useEffect(() => {
+    setDates(getDaysOfMonth(month.startDate, month.endDate));
+    dispatch(getEventListThunkAction(month.startDate, month.endDate));
   }, [month]);
 
   return (
@@ -67,7 +83,7 @@ function Calendar(props) {
         </div>
         <div className={styles.event_impact_types_container}>
           {Object.values(EVENT_IMPACT).map((each) => (
-            <EventImpactName impactConfig={each} />
+            <EventImpactName key={each.value} impactConfig={each} />
           ))}
         </div>
         <div>
@@ -75,10 +91,11 @@ function Calendar(props) {
         </div>
       </div>
       <CalendarTable
-        calendarEvents={CALENDAR_EVENTS}
+        calendarEvents={events}
         cities={CITIES}
         month={month}
         monthDateList={dates}
+        onClickEvent={handleClickEvent}
       />
     </div>
   );

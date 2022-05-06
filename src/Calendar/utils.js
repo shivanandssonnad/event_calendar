@@ -104,14 +104,17 @@ function getEventsByRow(events, result = []) {
 
 function handleGroupSimilarEvents(events) {
   const groupedList = events.reduce((acc, curr) => {
-    const key = `${curr.left}_${curr.span}_${curr.impactId}`;
+    let key = `${curr.left}_${curr.span}_${curr.impactId}`;
+    if (curr.span === 1) {
+      key = `${key}_${curr.event.event.eventId}`;
+    }
     if (acc[key]) {
-      acc[key].events.push(curr.event.event);
+      acc[key].similarEvents.push(curr.event.event);
       return acc;
     }
     acc[key] = {
       ...curr,
-      events: [curr.event.event]
+      similarEvents: [curr.event.event]
     };
     return acc;
   }, {});
@@ -136,7 +139,7 @@ export function transformEvent(event, month) {
   const span = differenceInDays(endOfDay(endDate), startOfDay(startDate)) + 1;
   return {
     cityId: event.cityId,
-    eventId: event.eventId,
+    eventId: event.event.eventId,
     impactId: event.impactId,
     typeId: event.event.typeId,
     startDateOverLapping,
@@ -146,6 +149,10 @@ export function transformEvent(event, month) {
     right: endDate.getDate(),
     event: {
       ...event,
+      event: {
+        ...event.event,
+        impactId: event.impactId,
+      },
       startDate,
       endDate
     }
@@ -192,7 +199,7 @@ function separateEventRowsAndShowMoreEvents(eventRows) {
       }
       acc[key] = {
         ...curr,
-        showMoreList: [curr]
+        showMoreList: [curr.event]
       };
       return acc;
     }, {});
@@ -209,9 +216,7 @@ export function getCalendarEventsByCityId(calendarEvents, cityId, month) {
     .sort(sortByLeftAndSpan); // sort events by left position and span higher to lower
 
   const groupedEventList = handleGroupSimilarEvents(events); // group similar events to one event
-
   const eventRows = getEventsByRow(groupedEventList); // convert events list to event rows list to display on UI
-  console.log(eventRows);
 
   const [
     filteredEventRows,
@@ -224,7 +229,7 @@ export function getCalendarEventsByCityId(calendarEvents, cityId, month) {
   };
 }
 
-function getEventColorClass(impactId) {
+export function getEventColorClass(impactId) {
   switch (impactId) {
     case 0:
       return styles.event_positive;
