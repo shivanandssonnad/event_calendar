@@ -16,6 +16,7 @@ import {
   API_DATE_FORMAT,
   CELL_MIN_WIDTH,
   EVENT_HEIGHT,
+  EVENT_RENDERING_TYPE,
   MAX_ROWS_ON_UI,
   PADDING,
   TOP_PADDING,
@@ -106,7 +107,7 @@ function handleGroupSimilarEvents(events) {
   const groupedList = events.reduce((acc, curr) => {
     let key = `${curr.left}_${curr.span}_${curr.impactId}`;
     if (curr.span === 1) {
-      key = `${key}_${curr.event.event.eventId}`;
+      key = `${curr.left}_${curr.span}`;
     }
     if (acc[key]) {
       acc[key].similarEvents.push(curr.event.event);
@@ -114,14 +115,14 @@ function handleGroupSimilarEvents(events) {
     }
     acc[key] = {
       ...curr,
-      similarEvents: [curr.event.event]
+      similarEvents: [curr.event.event],
     };
     return acc;
   }, {});
   return Object.values(groupedList);
 }
 
-export function transformEvent(event, month) {
+export function transformEvent(event, month, cityId) {
   const monthStartDate = month.startDate;
   const monthEndDate = month.endDate;
   let startDateOverLapping = false;
@@ -138,10 +139,10 @@ export function transformEvent(event, month) {
   }
   const span = differenceInDays(endOfDay(endDate), startOfDay(startDate)) + 1;
   return {
-    cityId: event.cityId,
-    eventId: event.event.eventId,
+    cityId,
+    eventId: event.eventId,
     impactId: event.impactId,
-    typeId: event.event.typeId,
+    typeId: event.eventTypeId,
     startDateOverLapping,
     endDateOverLapping,
     span,
@@ -150,8 +151,10 @@ export function transformEvent(event, month) {
     event: {
       ...event,
       event: {
-        ...event.event,
+        eventId: event.cityEventId || event.eventId,
         impactId: event.impactId,
+        typeId: event.eventTypeId,
+        name: event.eventName,
       },
       startDate,
       endDate
@@ -207,26 +210,34 @@ function separateEventRowsAndShowMoreEvents(eventRows) {
   return [filteredEventRows, showMoreRowEvents];
 }
 
+export function addEventRenderingType(groupedEvent) {
+  let eventRenderingType = null;
+  if (groupedEvent.span === 1 && groupedEvent.similarEvents.length > 1) {
+    eventRenderingType = EVENT_RENDERING_TYPE.EVENT_SINGLE_SPAN_WITH_MULTIPLE_EVENTS;
+  } else if (groupedEvent.similarEvents.length > 1) {
+    eventRenderingType = EVENT_RENDERING_TYPE.EVENT_SPAN_WITH_MULTIPLE_EVENTS
+  } else {
+    eventRenderingType = EVENT_RENDERING_TYPE.EVENT_SPAN_WITH_SINGLE_EVENT;
+  }
+  return {
+    ...groupedEvent,
+    eventRenderingType,
+  }
+}
+
 export function getCalendarEventsByCityId(calendarEvents, cityId, month) {
   const events = calendarEvents
-    .map((each) => each.cityId.map((e) => ({ ...each, cityId: e })))
+    .filter((each) => each.cityId === cityId)
+    .map(each => each.events)
     .flatMap((each) => each)
-    .filter((each) => each.cityId === cityId) // filter events for given city id
-    .map((each) => transformEvent(each, month)) // transform event to required format
+    .map((each) => transformEvent(each, month, cityId)) // transform event to required format
     .sort(sortByLeftAndSpan); // sort events by left position and span higher to lower
 
-  const groupedEventList = handleGroupSimilarEvents(events); // group similar events to one event
+  const groupedEventList = handleGroupSimilarEvents(events) // group similar events to one event
+    .map(each => addEventRenderingType(each));  // add event rendering type to each grouped event
+
   const eventRows = getEventsByRow(groupedEventList); // convert events list to event rows list to display on UI
-
-  const [
-    filteredEventRows,
-    showMoreEventRow
-  ] = separateEventRowsAndShowMoreEvents(eventRows);
-
-  return {
-    eventRows: filteredEventRows,
-    showMoreEventRow
-  };
+  return eventRows;
 }
 
 export function getEventColorClass(impactId) {
@@ -242,20 +253,14 @@ export function getEventColorClass(impactId) {
   }
 }
 
-export function getStyleForEvent(eventDetails, row, index, isShowMore) {
+export function getStyleForEvent(eventDetails, row) {
   const {
     span,
     left,
     startDateOverLapping,
     endDateOverLapping,
-    impactId
   } = eventDetails;
   const classes = [];
-  if (!isShowMore) {
-    classes.push(getEventColorClass(impactId));
-  } else {
-    classes.push(styles.show_more_link);
-  }
   const top = row * (EVENT_HEIGHT + TOP_PADDING) + TOP_PADDING;
   let width = CELL_MIN_WIDTH * span - PADDING * 2;
   let leftPosition = CELL_MIN_WIDTH * left + PADDING;

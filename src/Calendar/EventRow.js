@@ -4,14 +4,12 @@ import PropTypes from "prop-types";
 import Event from "./Event";
 
 import styles from "./styles.module.scss";
-import ShowMoreEvent from "./ShowMoreEvent";
 
 function EventRow(props) {
-  const { rowIndex, events, showMoreRow } = props;
+  const { rowIndex, events } = props;
   return (
     <div className={styles.event_row}>
       {events.map((each, index) => {
-        if (!showMoreRow) {
           return (
             <Event
               eventDetails={each}
@@ -21,16 +19,6 @@ function EventRow(props) {
               onClick={props.onClick}
             />
           );
-        }
-        return (
-          <ShowMoreEvent
-            eventDetails={each}
-            row={rowIndex}
-            index={index}
-            key={index}
-            onClick={props.onClick}
-          />
-        );
       })}
     </div>
   );

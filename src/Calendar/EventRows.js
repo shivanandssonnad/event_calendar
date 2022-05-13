@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import EventRow from "./EventRow";
 
 function EventRows(props) {
-  const { eventRows, cityId, showMoreEventRow } = props;
+  const { eventRows, cityId } = props;
   return (
     <div>
       {eventRows.map((each, index) => {
@@ -16,12 +16,6 @@ function EventRows(props) {
           />
         );
       })}
-      <EventRow
-        rowIndex={eventRows.length}
-        events={showMoreEventRow}
-        showMoreRow
-        onClick={props.onClick}
-      />
     </div>
   );
 }

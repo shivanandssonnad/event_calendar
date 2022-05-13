@@ -74,357 +74,370 @@ export const CITIES = new Array(TOTAL_CITIES).fill(1).map((each, index) => ({
   id: index
 }));
 
+export const EVENT_RENDERING_TYPE = {
+  EVENT_SPAN_WITH_SINGLE_EVENT: 'EVENT_SPAN_WITH_SINGLE_EVENT',
+  EVENT_SPAN_WITH_MULTIPLE_EVENTS: 'EVENT_SPAN_WITH_MULTIPLE_EVENTS',
+  EVENT_SINGLE_SPAN_WITH_MULTIPLE_EVENTS: 'EVENT_SINGLE_SPAN_WITH_MULTIPLE_EVENTS',
+};
+
 export const CALENDAR_EVENTS = [
-  // event overlapping with prev month
   {
-    cityId: [0, 4],
-    startDate: "28/03/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 0,
-    description: "hello",
-    event: {
-      eventId: 1,
-      name: "Event overlap with prev month",
-      typeId: 0
-    }
-  },
-  // event overlapping with next month
-  {
-    cityId: [0, 4],
-    startDate: "28/04/2022",
-    endDate: "03/05/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 2,
-      name: "Event overlap with next month",
-      typeId: 1
-    }
-  },
-  // multiple events on same day with different impact and type
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "02/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 3,
-      name: "Diwali",
-      typeId: 0
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "02/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 2,
-    description: "hello",
-    event: {
-      eventId: 4,
-      name: "Diwali",
-      typeId: 1
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "02/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 3,
-    description: "hello",
-    event: {
-      eventId: 5,
-      name: "Diwali",
-      typeId: 2
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "02/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 4,
-    description: "hello",
-    event: {
-      eventId: 6,
-      name: "Diwali",
-      typeId: 3
-    }
-  },
-  // multiple events on same day with same impact and different type
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 7,
-      name: "Diwali",
-      typeId: 0
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 8,
-      name: "Diwali",
-      typeId: 1
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 9,
-      name: "Diwali",
-      typeId: 2
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "02/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 10,
-      name: "Diwali",
-      typeId: 3
-    }
-  },
-  // event with more than 1 day span
-  {
-    cityId: [1],
-    startDate: "04/04/2022",
-    endDate: "06/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 11,
-      name: "Diwali",
-      typeId: 1
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "05/04/2022",
-    endDate: "06/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 2,
-    description: "hello",
-    event: {
-      eventId: 12,
-      name: "Diwali",
-      typeId: 2
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "05/04/2022",
-    endDate: "08/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 3,
-    description: "hello",
-    event: {
-      eventId: 13,
-      name: "Diwali",
-      typeId: 3
-    }
-  },
-  // single event per day
-  {
-    cityId: [1],
-    startDate: "08/04/2022",
-    endDate: "08/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 14,
-      name: "Diwali 2",
-      typeId: 1
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "09/04/2022",
-    endDate: "09/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 2,
-    description: "hello",
-    event: {
-      eventId: 15,
-      name: "Diwali 2",
-      typeId: 2
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "10/04/2022",
-    endDate: "10/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 3,
-    description: "hello",
-    event: {
-      eventId: 16,
-      name: "Diwali",
-      typeId: 3
-    }
-  },
-  {
-    cityId: [1],
-    startDate: "11/04/2022",
-    endDate: "11/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 3,
-    description: "hello",
-    event: {
-      eventId: 17,
-      name: "Diwali",
-      typeId: 4
-    }
+    cityId: 1,
+    events: [
+      {
+        cityEventId: 1,
+        startDate: "28/03/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 0,
+        description: "hello",
+        eventId: 1,
+        eventName: "Event overlap with prev month",
+        eventTypeId: 0
+      },
+      // event overlapping with next month
+      {
+        cityEventId: 2,
+        startDate: "28/04/2022",
+        endDate: "03/05/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 2,
+        eventName: "Event overlap with next month",
+        eventTypeId: 1
+      },
+      // multiple events on same day with different impact and type
+      {
+        cityEventId: 3,
+        startDate: "02/04/2022",
+        endDate: "02/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 3,
+        eventName: "Diwali",
+        eventTypeId: 0
+      },
+      {
+        cityEventId: 4,
+        startDate: "02/04/2022",
+        endDate: "02/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 2,
+        description: "hello",
+        eventId: 4,
+        eventName: "Diwali",
+        eventTypeId: 1
+      },
+      {
+        cityEventId: 5,
+        startDate: "02/04/2022",
+        endDate: "02/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 3,
+        description: "hello",
+        eventId: 5,
+        eventName: "Diwali",
+        eventTypeId: 2
+      },
+      {
+        cityEventId: 6,
+        startDate: "02/04/2022",
+        endDate: "02/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 4,
+        description: "hello",
+        eventId: 6,
+        eventName: "Diwali",
+        eventTypeId: 3
+      },
+      // multiple events on same day with same impact and different type
+      {
+        cityEventId: 7,
+        startDate: "02/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 7,
+        eventName: "Diwali",
+        eventTypeId: 0
+      },
+      {
+        cityEventId: 8,
+        startDate: "02/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 8,
+        eventName: "Diwali",
+        eventTypeId: 1
+      },
+      {
+        cityEventId: 9,
+        startDate: "02/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 9,
+        eventName: "Diwali",
+        eventTypeId: 2
+      },
+      {
+        cityEventId: 10,
+        startDate: "02/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 10,
+        eventName: "Diwali",
+        eventTypeId: 3
+      },
+      // event with more than 1 day span
+      {
+        cityEventId: 11,
+        startDate: "04/04/2022",
+        endDate: "06/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 11,
+        eventName: "Diwali",
+        eventTypeId: 1
+      },
+      {
+        cityEventId: 12,
+        startDate: "05/04/2022",
+        endDate: "06/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 2,
+        description: "hello",
+        eventId: 12,
+        eventName: "Diwali",
+        eventTypeId: 2
+      },
+      {
+        cityEventId: 13,
+        startDate: "05/04/2022",
+        endDate: "08/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 3,
+        description: "hello",
+        eventId: 13,
+        eventName: "Diwali",
+        eventTypeId: 3
+      },
+      // single event per day
+      {
+        cityEventId: 14,
+        startDate: "08/04/2022",
+        endDate: "08/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 14,
+        eventName: "Diwali 2",
+        eventTypeId: 1
+      },
+      {
+        cityEventId: 15,
+        startDate: "09/04/2022",
+        endDate: "09/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 2,
+        description: "hello",
+        eventId: 15,
+        eventName: "Diwali 2",
+        eventTypeId: 2
+      },
+      {
+        cityEventId: 16,
+        startDate: "10/04/2022",
+        endDate: "10/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 3,
+        description: "hello",
+        eventId: 16,
+        eventName: "Diwali",
+        eventTypeId: 3
+      },
+      {
+        cityEventId: 17,
+        startDate: "11/04/2022",
+        endDate: "11/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 3,
+        description: "hello",
+        eventId: 17,
+        eventName: "Diwali",
+        eventTypeId: 4
+      },
+      {
+        cityEventId: 18,
+        startDate: "12/04/2022",
+        endDate: "12/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 3,
+        description: "hello",
+        eventId: 18,
+        eventName: "Diwali",
+        eventTypeId: 5
+      },
+      {
+        cityEventId: 19,
+        startDate: "13/04/2022",
+        endDate: "13/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 19,
+        eventName: "Diwali",
+        eventTypeId: 6
+      },
+    ]
   },
   {
-    cityId: [1],
-    startDate: "12/04/2022",
-    endDate: "12/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 3,
-    description: "hello",
-    event: {
-      eventId: 18,
-      name: "Diwali",
-      typeId: 5
-    }
+    cityId: 2,
+    events: [
+      {
+        cityEventId: 20,
+        startDate: "13/04/2022",
+        endDate: "13/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 19,
+        eventName: "Diwali",
+        eventTypeId: 6
+      },
+      {
+        cityEventId: 21,
+        startDate: "03/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 20,
+        eventName: "Diwali",
+        eventTypeId: 1
+      },
+      {
+        cityEventId: 22,
+        startDate: "03/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 2,
+        description: "hello",
+        eventId: 21,
+        eventName: "Diwali",
+        eventTypeId: 2
+      },
+      {
+        cityEventId: 23,
+        startDate: "03/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 3,
+        description: "hello",
+        eventId: 22,
+        eventName: "Diwali",
+        eventTypeId: 1
+      },
+      {
+        cityEventId: 24,
+        startDate: "03/04/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 0,
+        description: "hello",
+        eventId: 22,
+        eventName: "Diwali",
+        eventTypeId: 4
+      }
+    ]
   },
   {
-    cityId: [1, 2],
-    startDate: "13/04/2022",
-    endDate: "13/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 19,
-      name: "Diwali",
-      typeId: 6
-    }
-  },
-  // test show more for single day
-  {
-    cityId: [2],
-    startDate: "03/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 1,
-    description: "hello",
-    event: {
-      eventId: 20,
-      name: "Diwali",
-      typeId: 1
-    }
-  },
-  {
-    cityId: [2],
-    startDate: "03/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 2,
-    description: "hello",
-    event: {
-      eventId: 21,
-      name: "Diwali",
-      typeId: 2
-    }
-  },
-  {
-    cityId: [2],
-    startDate: "03/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 3,
-    description: "hello",
-    event: {
-      eventId: 22,
-      name: "Diwali",
-      typeId: 1
-    }
-  },
-  {
-    cityId: [2],
-    startDate: "03/04/2022",
-    endDate: "03/04/2022",
-    startTime: "09:00",
-    endTime: "22:00",
-    categoryId: [1, 2, 3],
-    impactId: 0,
-    description: "hello",
-    event: {
-      eventId: 22,
-      name: "Diwali",
-      typeId: 4
-    }
+    cityId: 4,
+    events: [
+      {
+        cityEventId: 25,
+        startDate: "28/03/2022",
+        endDate: "03/04/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 0,
+        description: "hello",
+        eventId: 1,
+        eventName: "Event overlap with prev month",
+        eventTypeId: 0
+      },
+      // event overlapping with next month
+      {
+        cityEventId: 26,
+        startDate: "28/04/2022",
+        endDate: "03/05/2022",
+        startTime: "09:00",
+        endTime: "22:00",
+        categoryId: [1, 2, 3],
+        impactId: 1,
+        description: "hello",
+        eventId: 2,
+        eventName: "Event overlap with next month",
+        eventTypeId: 1
+      },
+    ]
   }
 ];

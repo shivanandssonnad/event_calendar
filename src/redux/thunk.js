@@ -6,11 +6,16 @@ export function getEventListThunkAction(request) {
     return async (dispatch) => {
         dispatch(getEventListAction());
         try {
-            const result = await fetchEventList(null, {
-                "fromDate" : "30/03/2022",
-                "toDate": "04/04/2022",
-                "cityIds": [1,2,3]
-              })
+            // const result = await fetchEventList(null, {
+            //     "fromDate" : "30/03/2022",
+            //     "toDate": "04/04/2022",
+            //     "cityIds": [1,2,3]
+            //   })
+              dispatch(getEventListCompleteAction({
+                success: true,
+                error: false,
+                list: CALENDAR_EVENTS,
+            }))
         } catch (e) {
             dispatch(getEventListCompleteAction({
                 success: true,

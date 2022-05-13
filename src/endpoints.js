@@ -4,5 +4,5 @@ import { createService } from "./utils/serviceFactory";
 export const fetchEventList = createService({
     baseUrl: BASE_URL,
     url: API.eventList,
-    method: 'POST',
+    method: 'GET',
 })
