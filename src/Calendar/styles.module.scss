@@ -39,6 +39,7 @@
   display: grid;
   grid-template-columns: max-content auto max-content max-content;
   column-gap: 24px;
+  align-items: center;
 }
 
 .table_month_container {
@@ -172,6 +173,7 @@
   
   padding: 8px 11px;
   color: #212529;
+  cursor: pointer;
 }
 
 .event_tile_container {

@@ -34,6 +34,7 @@ function MultipleEventsWithSingleSpanning(props) {
             {eventsToShowInShowMore.length && (
                 <ShowMoreEvent
                     events={eventsToShowInShowMore}
+                    onClick={onClick}
                 />
             )}
         </div>

@@ -20,27 +20,29 @@ function MultipleEvents(props) {
         () => getStyleForEvent(eventDetails, row, index),
         [eventDetails, row, index]
     );
-    
+
     const impactClass = useMemo(() => getEventColorClass(impactId), [impactId]);
 
     return (
-        <div
-            ref={anchorEl}
-            style={{
-                ...style,
-                gridTemplateColumns: `repeat(${length}, 15px)`
-            }}
-            className={classNames(classes, className, impactClass, styles.event)}
-            onClick={handleToggleOpen}
-        >
-            {events.map((each) => (
-                <div key={each.eventId}>
-                    <EventTypeIcon
-                        key={each.eventId}
-                        eventTypeId={each.typeId}
-                    />
-                </div>
-            ))}
+        <>
+            <div
+                ref={anchorEl}
+                style={{
+                    ...style,
+                    gridTemplateColumns: `repeat(${length}, 15px)`
+                }}
+                className={classNames(classes, className, impactClass, styles.event)}
+                onClick={handleToggleOpen}
+            >
+                {events.map((each) => (
+                    <div key={each.eventId}>
+                        <EventTypeIcon
+                            key={each.eventId}
+                            eventTypeId={each.typeId}
+                        />
+                    </div>
+                ))}
+            </div>
             <EventListPopup
                 open={open}
                 anchorEl={anchorEl}
@@ -48,7 +50,7 @@ function MultipleEvents(props) {
                 onClick={onClick}
                 onClose={handleToggleOpen}
             />
-        </div>
+        </>
     );
 }
 

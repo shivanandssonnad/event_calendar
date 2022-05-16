@@ -1,9 +1,15 @@
 import React, { useEffect, useMemo, useState } from "react";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from 'react-redux';
+import { Button, IconButton } from "@mui/material";
 
 import CalendarTable from "./Table";
+import Icon from "../Icons";
+import EventImpactName from "./EventImpactName";
 
+import { getEventListThunkAction } from "../redux/thunk";
+import { selectEventList, selectEventListLoading } from "../redux/selectors";
 import {
   getCurrentMonth,
   getDaysOfMonth,
@@ -11,14 +17,9 @@ import {
   getPrevMonth
 } from "./utils";
 
-import { CALENDAR_EVENTS, CITIES, EVENT_IMPACT } from "../constants";
+import { CITIES, EVENT_IMPACT } from "../constants";
 
 import styles from "./styles.module.scss";
-import classNames from "classnames";
-import Icon from "../Icons";
-import EventImpactName from "./EventImpactName";
-import { getEventListThunkAction } from "../redux/thunk";
-import { selectEventList, selectEventListLoading } from "../redux/selectors";
 
 function Calendar(props) {
   const { currentMonth } = props;
@@ -66,19 +67,19 @@ function Calendar(props) {
         )}
       >
         <div>
-          <button>+ Add</button>
+          <Button variant="contained">+ Add</Button>
         </div>
         <div className={styles.table_month_container}>
           <span>
-            <button onClick={handlePrevMonth}>
+            <IconButton onClick={handlePrevMonth}>
               <Icon name="ArrowLeftIcon" width={10} height={10} />
-            </button>
+            </IconButton>
           </span>
           <span>&nbsp;{month.monthStr}&nbsp;</span>
           <span>
-            <button onClick={handleNextMonth}>
+            <IconButton onClick={handlePrevMonth}>
               <Icon name="ArrowRightIcon" width={10} height={10} />
-            </button>
+            </IconButton>
           </span>
         </div>
         <div className={styles.event_impact_types_container}>
@@ -87,7 +88,7 @@ function Calendar(props) {
           ))}
         </div>
         <div>
-          <button>Filters</button>
+          <Button variant="outlined">Filters</Button>
         </div>
       </div>
       <CalendarTable
